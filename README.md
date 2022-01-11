@@ -27,12 +27,12 @@ Should we have a separate endpoint for categories?
 
 Example JSON object of a product (structure subject to change)
 
-```JSON
+```javascript
 {
   name: "",
   description: "",
-  sku: "",
-  upc: "",
+  sku: "", // stock keeping unit
+  upc: "", // universal product code
   brand: "",
   dimensions: "",
   weight: "",
