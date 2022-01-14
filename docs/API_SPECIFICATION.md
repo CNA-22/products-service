@@ -1,0 +1,177 @@
+# API Specification
+
+## Product Interface
+
+```ts
+interface Product {
+    id: string;
+    name: string;
+    description: string;
+    manufacturer: string;
+    price: number; // EUR
+    chip: string;
+    memory: number; // MB
+    rating: number; // 0.0 - 1.0
+    packageDimensions: {
+        x: number; // cm
+        y: number; // cm
+        z: number; // cm
+    };
+    packageWeight: number; // kg
+}
+```
+
+## Authorization With Admin Rights
+
+Some endpoints require authorization.
+
+To authorize, provide the following HTTP header in your request:
+
+```
+Authorization: Bearer ${token}
+```
+
+where in the place of `${token}` you provide your valid JWT token.
+
+## Endpoints
+
+### `GET /products`
+
+#### Query Params
+
+<!-- prettier-ignore -->
+| Key | Type | Required | Default | Description |
+| - | - | - | - | - |
+| `page` | unsigned integer | | 0 | What page of products? |
+| `size` | unsigned integer | | 10 | How many products per page? |
+| `sort` | name, manufacturer, price, chip, memory or rating | | name | What should the products be sorted by? Secondary sorting is always name. A "-" (minus sign) in front of the type denotes descending order. |
+| `filter_manufacturer` | comma-separated list | | | Filter items from manufacturers in this list. If the manufacturer name itself contains a comma, wrap it in double quotes.
+| `min_price` | unsigned float | | | Filter items with a price greater than this.
+| `max_price` | unsigned float | | | Filter items with a price greater than this.
+| `filter_chip` | comma-separated list | | | Filter items with chips in this list. If the chip name itself contains a comma, wrap it in double quotes.
+| `min_memory` | unsigned integer | | | Filter items with a memory lesser than this.
+| `max_memory` | unsigned integer | | | Filter items with a memory greater than this.
+| `min_rating` | unsigned float | | | Filter items with a rating lesser than this.
+| `max_rating` | unsigned float | | | Filter items with a rating greater than this.
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: described below
+
+```ts
+interface Page {
+    /**
+     * The number of the page you requested.
+     */
+    page: number;
+    /**
+     * The page size you requested.
+     */
+    pageSize: number;
+    /**
+     * The actual size of the page.
+     * Equivalent to the length of the items array.
+     */
+    actualSize: number;
+    /**
+     * The number of pages available with
+     * the current query param configuration.
+     */
+    totalPagesCount: number;
+    /**
+     * The total number of items matching
+     * the current query param configuration.
+     */
+    totalItemsCount: number;
+    /**
+     * The items array.
+     */
+    items: Product[];
+}
+```
+
+### `GET /product/:id`
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `id` | string | The ID of a product. |
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the `Product` you requested
+
+### `POST /product`
+
+🔒 [Requires authorization with admin rights]
+
+#### Request
+
+Content-Type: `application/json`
+
+Body: an object that conforms to the `Product` interface
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the newly created `Product`
+
+### `PUT /product/:id`
+
+🔒 [Requires authorization with admin rights]
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `id` | string | The ID of a product. |
+
+#### Request
+
+Content-Type: `application/json`
+
+Body: described below
+
+```ts
+/**
+ * An object that conforms to the Product interface,
+ * but without an id property and with all top-level
+ * properties being optional.
+ */
+type PutRequestBody = Partial<Omit<Product, 'id'>>;
+```
+
+Any top-level properties that are not specified in the request body will be left unchanged. Any included top-level property will be overwritten in full.
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the newly updated `Product`
+
+### `DELETE /product/:id`
+
+🔒 [Requires authorization with admin rights]
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `id` | string | The ID of a product. |
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the `Product` that was deleted
+
+[requires authorization with admin rights]: #authorization-with-admin-rights
