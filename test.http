@@ -1,0 +1,14 @@
+@baseUrl=http://localhost:3000
+// @baseUrl = https://afternoon-scrubland-78500.herokuapp.com/
+### GET
+GET {{baseUrl}}
+
+
+### POST
+POST {{baseUrl}}/
+Content-Type: application/json
+
+{
+    "name": "xXx_ScalperZ_xXx"
+}
+
