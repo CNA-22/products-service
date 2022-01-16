@@ -12,6 +12,7 @@ interface Product {
     chip: string;
     memory: number; // MB
     rating: number; // 0.0 - 1.0
+    images: string[]; // image IDs
     packageDimensions: {
         x: number; // cm
         y: number; // cm
@@ -92,14 +93,14 @@ interface Page {
 }
 ```
 
-### `GET /product/:id`
+### `GET /product/:productId`
 
 #### Path Params
 
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `id` | string | The ID of a product. |
+| `productId` | string | The ID of a product. |
 
 #### Response
 
@@ -107,9 +108,25 @@ Content-Type: `application/json`
 
 Body: the `Product` you requested
 
+### `GET /product/:productId/image/:imageId`
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `productId` | string | The ID of a product. |
+| `imageId` | string | The ID of an image of this product. |
+
+#### Response
+
+Content-Type: `image/*`
+
+Body: the image you requested
+
 ### `POST /product`
 
-🔒 [Requires authorization with admin rights]
+> 🔒 [Requires authorization with admin rights]
 
 #### Request
 
@@ -123,16 +140,52 @@ Content-Type: `application/json`
 
 Body: the newly created `Product`
 
-### `PUT /product/:id`
+### `POST /product/:productId/image`
 
-🔒 [Requires authorization with admin rights]
+> 🔒 [Requires authorization with admin rights]
 
 #### Path Params
 
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `id` | string | The ID of a product. |
+| `productId` | string | The ID of a product. |
+
+#### Request
+
+Content-Type: `multipart/form-data; boundary=${boundary}`
+
+Body: described below
+
+```
+--${boundary}
+Content-Disposition: form-data; name='image'; filename='${filename}'
+Content-Type: ${mimetype}
+
+${file}
+--${boundary}--
+```
+
+where in the place of `${boundary}`, `${filename}`, `${mimetype}` and `${file}` you provide your request-specific values.
+
+> 💡 If you're using JavaScript, the [`FormData`](https://developer.mozilla.org/docs/Web/API/FormData) interface can take care of creating a valid multipart body for you.
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the newly updated `Product`
+
+### `PUT /product/:productId`
+
+> 🔒 [Requires authorization with admin rights]
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `productId` | string | The ID of a product. |
 
 #### Request
 
@@ -143,10 +196,10 @@ Body: described below
 ```ts
 /**
  * An object that conforms to the Product interface,
- * but without an id property and with all top-level
- * properties being optional.
+ * but without the id and images properties
+ * and with all top-level properties being optional.
  */
-type PutRequestBody = Partial<Omit<Product, 'id'>>;
+type PutRequestBody = Partial<Omit<Product, 'id' | 'images'>>;
 ```
 
 Any top-level properties that are not specified in the request body will be left unchanged. Any included top-level property will be overwritten in full.
@@ -157,21 +210,39 @@ Content-Type: `application/json`
 
 Body: the newly updated `Product`
 
-### `DELETE /product/:id`
+### `DELETE /product/:productId`
 
-🔒 [Requires authorization with admin rights]
+> 🔒 [Requires authorization with admin rights]
 
 #### Path Params
 
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `id` | string | The ID of a product. |
+| `productId` | string | The ID of a product. |
 
 #### Response
 
 Content-Type: `application/json`
 
 Body: the `Product` that was deleted
+
+### `DELETE /product/:productId/image/:imageId`
+
+> 🔒 [Requires authorization with admin rights]
+
+#### Path Params
+
+<!-- prettier-ignore -->
+| Param | Type | Description |
+| - | - | - |
+| `productId` | string | The ID of a product. |
+| `imageId` | string | The ID of an image of this product. |
+
+#### Response
+
+Content-Type: `application/json`
+
+Body: the newly updated `Product`
 
 [requires authorization with admin rights]: #authorization-with-admin-rights
