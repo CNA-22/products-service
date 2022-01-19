@@ -4,7 +4,7 @@
 
 ```ts
 interface Product {
-    id: string;
+    id: string; // 12 numerical digits
     name: string;
     description: string;
     manufacturer: string;
