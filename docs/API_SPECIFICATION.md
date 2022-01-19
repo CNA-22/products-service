@@ -12,7 +12,7 @@ interface Product {
     chip: string;
     memory: number; // MB
     rating: number; // 0.0 - 1.0
-    images: string[]; // image IDs
+    imageURLs: string[];
     packageDimensions: {
         x: number; // cm
         y: number; // cm
@@ -108,22 +108,6 @@ Content-Type: `application/json`
 
 Body: the `Product` you requested
 
-### `GET /product/:productId/image/:imageId`
-
-#### Path Params
-
-<!-- prettier-ignore -->
-| Param | Type | Description |
-| - | - | - |
-| `productId` | string | The ID of a product. |
-| `imageId` | string | The ID of an image of this product. |
-
-#### Response
-
-Content-Type: `image/*`
-
-Body: the image you requested
-
 ### `POST /product`
 
 > 🔒 [Requires authorization with admin rights]
@@ -132,7 +116,15 @@ Body: the image you requested
 
 Content-Type: `application/json`
 
-Body: an object that conforms to the `Product` interface
+Body: described below
+
+```ts
+/**
+ * An object that conforms to the Product interface,
+ * but without the id and imageURLs properties.
+ */
+type ProductPostRequestBody = Omit<Product, 'id' | 'imageURLs'>;
+```
 
 #### Response
 
@@ -196,10 +188,10 @@ Body: described below
 ```ts
 /**
  * An object that conforms to the Product interface,
- * but without the id and images properties
+ * but without the id and imageURLs properties
  * and with all top-level properties being optional.
  */
-type PutRequestBody = Partial<Omit<Product, 'id' | 'images'>>;
+type ProductPutRequestBody = Partial<Omit<Product, 'id' | 'imageURLs'>>;
 ```
 
 Any top-level properties that are not specified in the request body will be left unchanged. Any included top-level property will be overwritten in full.
@@ -227,7 +219,7 @@ Content-Type: `application/json`
 
 Body: the `Product` that was deleted
 
-### `DELETE /product/:productId/image/:imageId`
+### `DELETE /product/:productId/image`
 
 > 🔒 [Requires authorization with admin rights]
 
@@ -237,7 +229,18 @@ Body: the `Product` that was deleted
 | Param | Type | Description |
 | - | - | - |
 | `productId` | string | The ID of a product. |
-| `imageId` | string | The ID of an image of this product. |
+
+#### Request
+
+Content-Type: `application/json`
+
+Body: described below
+
+```ts
+interface ProductImageDeleteRequestBody {
+    url: string; // a URL that exists in the product's imageURLs array
+}
+```
 
 #### Response
 
