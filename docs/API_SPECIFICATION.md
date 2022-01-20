@@ -46,10 +46,10 @@ where in the place of `${token}` you provide your valid JWT token.
 | `page` | unsigned integer | | 0 | What page of products? |
 | `size` | unsigned integer | | 10 | How many products per page? |
 | `sort` | name, manufacturer, price, chip, memory or rating | | name | What should the products be sorted by? Secondary sorting is always name. A "-" (minus sign) in front of the type denotes descending order. |
-| `filter_manufacturer` | comma-separated list | | | Filter items from manufacturers in this list. If the manufacturer name itself contains a comma, wrap it in double quotes.
+| `filter_manufacturer` | string, can be provided multiple times | | | Filter items from manufacturers in this list.
 | `min_price` | unsigned float | | | Filter items with a price greater than this.
 | `max_price` | unsigned float | | | Filter items with a price greater than this.
-| `filter_chip` | comma-separated list | | | Filter items with chips in this list. If the chip name itself contains a comma, wrap it in double quotes.
+| `filter_chip` | string, can be provided multiple times | | | Filter items with chips in this list.
 | `min_memory` | unsigned integer | | | Filter items with a memory lesser than this.
 | `max_memory` | unsigned integer | | | Filter items with a memory greater than this.
 | `min_rating` | unsigned float | | | Filter items with a rating lesser than this.
