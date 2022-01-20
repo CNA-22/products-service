@@ -55,6 +55,8 @@ where in the place of `${token}` you provide your valid JWT token.
 | `min_rating` | unsigned float | | | Filter items with a rating lesser than this.
 | `max_rating` | unsigned float | | | Filter items with a rating greater than this.
 
+> 💡 If you're using JavaScript, the [`URLSearchParams`](https://developer.mozilla.org/docs/Web/API/URLSearchParams) interface can take care of creating a valid query string for you.
+
 #### Response
 
 Content-Type: `application/json`
