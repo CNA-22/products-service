@@ -33,9 +33,9 @@ interface IProductSchema extends Document {
     rating: number;
     imageURLs: string[];
     packageDimensions: {
-        x: number;
-        y: number;
-        z: number;
+        width: number;
+        height: number;
+        depth: number;
     };
     packageWeight: number;
 }

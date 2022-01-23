@@ -14,9 +14,9 @@ interface Product {
     rating: number; // 0.0 - 1.0
     imageURLs: string[];
     packageDimensions: {
-        x: number; // cm
-        y: number; // cm
-        z: number; // cm
+        width: number; // cm
+        height: number; // cm
+        depth: number; // cm
     };
     packageWeight: number; // kg
 }
