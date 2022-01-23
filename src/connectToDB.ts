@@ -30,6 +30,7 @@ const connectToDB = async (): Promise<void> => {
     );
     await mongoose.connect(
         `mongodb://${rootUsername}:${rootPassword}@${containerName}/${dbName}?authMechanism=SCRAM-SHA-1&authSource=admin`,
+        {ignoreUndefined: true}
     );
     console.log('Successfully connected to MongoDB.');
 };
