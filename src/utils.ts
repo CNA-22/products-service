@@ -36,6 +36,8 @@ export const allFulfilled = async <T>(
     }
 };
 
+export const betterIsArray = (any: any): any is any[] => Array.isArray(any);
+
 /**
  * If a query param has been specified multiple times,
  * which in other words means it's represented as an array in Express's `req.query`,
@@ -47,26 +49,28 @@ export const allFulfilled = async <T>(
  *
  * @param queryParam A query param as they are represented in Express's req.query object.
  * @throws {TypeError} Argument queryParam must be either a string, an array of strings or undefined.
- * @returns The "rightmost" value that the query param was specified as.
+ * @returns The "rightmost" value that the query param was specified as or undefined.
  */
 export const queryParamAsString = (
     queryParam: Query[string],
 ): string | undefined => {
-    if (queryParam != null) {
-        if (typeof queryParam === 'string') {
-            return queryParam;
-        } else if (typeof queryParam === 'object') {
-            if (Array.isArray(queryParam)) {
-                // @ts-expect-error
-                return queryParam[queryParam.length - 1];
-            } else {
-                throw new TypeError(
-                    'Argument queryParam must be either a string, an array of strings or undefined.',
-                );
+    if (typeof queryParam === 'undefined') {
+        return queryParam;
+    }
+    if (typeof queryParam === 'string') {
+        return queryParam;
+    }
+    if (typeof queryParam === 'object') {
+        if (betterIsArray(queryParam)) {
+            const lastElement = queryParam[queryParam.length - 1];
+            if (typeof lastElement === 'string') {
+                return lastElement;
             }
         }
     }
-    return undefined;
+    throw new TypeError(
+        'Argument queryParam must be either a string, an array of strings or undefined.',
+    );
 };
 
 export const evictOtherProperties = (
