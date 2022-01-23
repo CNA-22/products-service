@@ -1,9 +1,20 @@
-import { Router } from 'express';
+import { Router, RequestHandler } from 'express';
 import { JSONSchema7 } from 'json-schema';
 import requestBodyValidator from '../middlewares/requestBodyValidator';
 
 import Product from '../models/Product';
 import { evictOtherProperties } from '../utils';
+
+const findProduct: RequestHandler = async (req, res, next) => {
+    const product = await Product.findOne({ id: req.params.productId });
+    if (product != null) {
+        req.product = product;
+        next();
+    } else {
+        res.status(404).send();
+        return;
+    }
+};
 
 const generateId = async (): Promise<string> => {
     const id = Math.round(Math.random() * 1000000000000).toString();
@@ -62,5 +73,34 @@ product.post(
         res.status(201).json(product);
     },
 );
+
+product.put(
+    '/:productId',
+    findProduct,
+    requestBodyValidator(productRequestBodySchema),
+    async (req, res) => {
+        const product = req.product!;
+        for (const [key, value] of Object.entries(
+            evictOtherProperties(req.body, properties),
+        )) {
+            // @ts-expect-error
+            product[key] = value;
+        }
+        const updatedProduct = (await product.save()).toObject();
+        delete updatedProduct.__v;
+        delete updatedProduct._id;
+        // @ts-expect-error
+        delete updatedProduct.packageDimensions._id;
+        res.status(200).json(updatedProduct);
+    },
+);
+
+product.delete('/:productId', findProduct, async (req, res) => {
+    const deletedProduct = (await req.product!.deleteOne()).toObject();
+    delete deletedProduct.__v;
+    delete deletedProduct._id;
+    delete deletedProduct.packageDimensions._id;
+    res.status(200).json(deletedProduct);
+});
 
 export default product;

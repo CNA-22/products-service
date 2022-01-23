@@ -1,3 +1,5 @@
+/// <reference types="./types/express-serve-static-core" />
+
 import connectToDB from './connectToDB';
 import express from 'express';
 import morgan from 'morgan';
