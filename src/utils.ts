@@ -36,21 +36,32 @@ export const allFulfilled = async <T>(
     }
 };
 
-export const dearrayifyQueryParam = (
+/**
+ * If a query param has been specified multiple times,
+ * which in other words means it's represented as an array in Express's `req.query`,
+ * then this function will return the last value in that array.
+ * Else, if it's a string or undefined, it will return that.
+ *
+ * This function will not work unless the Express app that created the `req` has "query parser" set to "simple".
+ * (See https://masteringjs.io/tutorials/express/query-parameters#objects-and-arrays-in-query-strings.)
+ *
+ * @param queryParam A query param as they are represented in Express's req.query object.
+ * @throws {TypeError} Argument queryParam must be either a string, an array of strings or undefined.
+ * @returns The "rightmost" value that the query param was specified as.
+ */
+export const queryParamAsString = (
     queryParam: Query[string],
 ): string | undefined => {
     if (queryParam != null) {
         if (typeof queryParam === 'string') {
             return queryParam;
         } else if (typeof queryParam === 'object') {
-            if (
-                Array.isArray(queryParam) &&
-                typeof queryParam[0] === 'string'
-            ) {
-                return (queryParam as string[])[queryParam.length - 1];
+            if (Array.isArray(queryParam)) {
+                // @ts-expect-error
+                return queryParam[queryParam.length - 1];
             } else {
-                throw new Error(
-                    'queryParam was of unfamiliar ParsedQs | ParsedQs[] type.',
+                throw new TypeError(
+                    'Argument queryParam must be either a string, an array of strings or undefined.',
                 );
             }
         }

@@ -1,22 +1,22 @@
 import { Router } from 'express';
 
 import Product from '../models/Product';
-import { dearrayifyQueryParam } from '../utils';
+import { queryParamAsString } from '../utils';
 
 const products = Router();
 
 products.get('/', async (req, res) => {
-    let sortBy = dearrayifyQueryParam(req.query.sort);
+    let sortBy = queryParamAsString(req.query.sort);
     let direction = 'ascending';
     if (sortBy?.startsWith('-')) {
         sortBy = sortBy.slice(1);
         direction = 'descending';
     }
-    let page = parseInt(dearrayifyQueryParam(req.query.page)!);
+    let page = parseInt(queryParamAsString(req.query.page)!);
     if (isNaN(page)) {
         page = 0;
     }
-    let size = parseInt(dearrayifyQueryParam(req.query.size)!);
+    let size = parseInt(queryParamAsString(req.query.size)!);
     if (isNaN(size)) {
         size = 10;
     }
