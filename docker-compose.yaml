@@ -10,6 +10,7 @@ services:
         volumes:
             - ./db:/data/db
         restart: always
+        command: --logpath /dev/null
         ports:
             - '27017:27017'
 
