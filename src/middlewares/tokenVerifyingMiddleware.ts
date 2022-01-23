@@ -23,7 +23,7 @@ const tokenVerifyingMiddleware = ({
     }),
     (error, _req, res, next) => {
         if (error.name === 'UnauthorizedError') {
-            res.status(401).json({ status: 'Unauthorized' });
+            res.status(401).send();
             return;
         }
         next(error);

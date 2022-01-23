@@ -59,7 +59,7 @@ product.post(
         delete product._id;
         // @ts-expect-error
         delete product.packageDimensions._id;
-        res.status(201).json({ status: 'Created', contents: product });
+        res.status(201).json(product);
     },
 );
 

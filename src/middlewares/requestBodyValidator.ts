@@ -15,7 +15,6 @@ const requestBodyValidator = (schema: JSONSchema7): RequestHandler => {
             if (error instanceof AJV.ValidationError) {
                 console.error(error);
                 res.status(400).json({
-                    status: 'Bad request',
                     errors: error.errors,
                 });
             } else {

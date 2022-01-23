@@ -8,7 +8,7 @@ const serverErrorMiddleware = (): ErrorRequestHandler => async (
     _next,
 ) => {
     console.error(error);
-    res.status(500).json({ status: 'Internal Server Error' });
+    res.status(500).send();
 };
 
 export default serverErrorMiddleware;
