@@ -7,6 +7,7 @@ import { requireEnvVar } from './utils';
 import serverErrorMiddleware from './middlewares/serverErrorMiddleware';
 import jsonMiddleware from './middlewares/jsonMiddleware';
 import products from './routes/products';
+import product from './routes/product';
 
 // Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/index.ts#L20
 (async () => {
@@ -18,6 +19,7 @@ import products from './routes/products';
         .use(tokenVerifyingMiddleware({ secret, publicEndpoints }))
         .use(jsonMiddleware())
         .use('/products', products)
+        .use('/product', product)
         .use(serverErrorMiddleware())
         .listen(port, () => console.log(`Server listening on port ${port}.`));
 })().catch(error => {

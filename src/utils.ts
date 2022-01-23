@@ -57,3 +57,14 @@ export const dearrayifyQueryParam = (
     }
     return undefined;
 };
+
+export const evictOtherProperties = (
+    object: Record<string, any>,
+    whitelistedProperties: string[],
+): object => {
+    let cleanObject: Record<string, any> = {};
+    for (const whitelistedProperty of whitelistedProperties) {
+        cleanObject[whitelistedProperty] = object[whitelistedProperty];
+    }
+    return cleanObject;
+};
