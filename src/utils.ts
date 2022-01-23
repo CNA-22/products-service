@@ -122,7 +122,10 @@ export const evictOtherProperties = (
 ): object => {
     let cleanObject: Record<string, any> = {};
     for (const whitelistedProperty of whitelistedProperties) {
-        cleanObject[whitelistedProperty] = object[whitelistedProperty];
+        const value = object[whitelistedProperty];
+        if (value !== undefined) {
+            cleanObject[whitelistedProperty] = value;
+        }
     }
     return cleanObject;
 };
