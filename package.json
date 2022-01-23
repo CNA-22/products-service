@@ -18,7 +18,8 @@
     "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "dev": "tsnd src/index.ts"
+    "dev": "tsnd src/index.ts",
+    "create-token": "./scripts/createToken.js"
   },
   "peerDependencies": {},
   "husky": {
@@ -57,6 +58,7 @@
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.10",
     "@types/path-to-regexp": "^1.7.0",
+    "dotenv": "^14.2.0",
     "husky": "^7.0.4",
     "size-limit": "^7.0.5",
     "ts-node-dev": "^1.1.8",
