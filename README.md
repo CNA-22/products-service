@@ -16,7 +16,7 @@ The `products-service` is implemented as a [Node.js](https://nodejs.org/) server
 
 ### Development Environment
 
-Developing and testing the service locally is really easy. All you need to do is run `docker-compose up` in the repo directory, granted you have [Docker](https://www.docker.com/) installed (see [Docker Desktop](https://www.docker.com/products/docker-desktop) if you're using macOS or Windows).
+Developing and testing the service locally is really easy. All you need to do is run `docker compose up` in the repo directory, granted you have [Docker](https://www.docker.com/) installed (see [Docker Desktop](https://www.docker.com/products/docker-desktop) if you're using macOS or Windows).
 
 The local development environment is powered by [Docker Compose](https://docs.docker.com/compose/) and defined in the [`docker-compose.yaml`](docker-compose.yaml).
 
