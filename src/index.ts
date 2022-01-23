@@ -15,6 +15,7 @@ import product from './routes/product';
     const secret = requireEnvVar('JWT_SECRET');
     const port = process.env.PORT ?? 3000;
     express()
+        .set('query parser', 'simple')
         .use(morgan('dev'))
         .use(tokenVerifyingMiddleware({ secret, publicEndpoints }))
         .use(jsonMiddleware())
