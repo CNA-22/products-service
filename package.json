@@ -21,7 +21,8 @@
         "format": "prettier --write .",
         "tlp": "npm run tsc && npm run lint && npm run prettier",
         "tff": "npm run tsc && npm run fix && npm run format",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "create-token": "./scripts/createToken.js"
     },
     "dependencies": {
         "ajv": "^8.9.0",
@@ -44,6 +45,7 @@
         "@types/path-to-regexp": "^1.7.0",
         "@typescript-eslint/eslint-plugin": "^4.0.1",
         "@typescript-eslint/parser": "^4.0.0",
+        "dotenv": "^14.2.0",
         "eslint": "^7.12.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-config-standard-jsx": "^10.0.0",
