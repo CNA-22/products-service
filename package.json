@@ -30,7 +30,8 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.1.7",
         "morgan": "^1.10.0",
-        "ts-node": "^10.4.0"
+        "ts-node": "^10.4.0",
+        "typescript": "^4.5.5"
     },
     "devDependencies": {
         "@danielgiljam/eslint-config": "^3.0.3",
@@ -52,8 +53,7 @@
         "eslint-plugin-standard": "^4.1.0",
         "husky": "^7.0.4",
         "prettier": "^2.5.1",
-        "ts-node-dev": "^1.1.8",
-        "typescript": "^4.5.5"
+        "ts-node-dev": "^1.1.8"
     },
     "prettier": {
         "bracketSpacing": false,
