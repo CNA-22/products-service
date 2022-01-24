@@ -1,7 +1,7 @@
-import { IProduct } from '../models/Product';
+import {IProduct} from "../models/Product";
 
-declare module 'express-serve-static-core' {
+declare module "express-serve-static-core" {
     export interface Request {
-        product: (IProduct & { _id: any }) | null | undefined;
+        product: IProduct | null | undefined;
     }
 }

@@ -4,17 +4,17 @@ These are only suggestions. Feel free to make changes.
 
 **`GET`** `/products/`
 
-- lists all products
-- (should it feature a search system and a pagination system or just include all results?)
+-   lists all products
+-   (should it feature a search system and a pagination system or just include all results?)
 
 **`GET`** `/product/{unique identifier}`
 
-- get a product by a unique identifier (part number, SKU, UPC or productId ? (not decided yet))
-- provides more detailed information about a single product
+-   get a product by a unique identifier (part number, SKU, UPC or productId ? (not decided yet))
+-   provides more detailed information about a single product
 
 **`POST`** `/product/`
 
-- add a new product to the database
+-   add a new product to the database
 
 ### Thoughts
 

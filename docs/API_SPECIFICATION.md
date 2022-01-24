@@ -125,7 +125,7 @@ Body: described below
  * An object that conforms to the Product interface,
  * but without the id and imageURLs properties.
  */
-type ProductPostRequestBody = Omit<Product, 'id' | 'imageURLs'>;
+type ProductPostRequestBody = Omit<Product, "id" | "imageURLs">;
 ```
 
 #### Response
@@ -193,7 +193,7 @@ Body: described below
  * but without the id and imageURLs properties
  * and with all top-level properties being optional.
  */
-type ProductPutRequestBody = Partial<Omit<Product, 'id' | 'imageURLs'>>;
+type ProductPutRequestBody = Partial<Omit<Product, "id" | "imageURLs">>;
 ```
 
 Any top-level properties that are not specified in the request body will be left unchanged. Any included top-level property will be overwritten in full.

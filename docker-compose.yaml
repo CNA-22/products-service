@@ -1,5 +1,5 @@
 # Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/c32694d67e49950093e38f9fa5248d5c18097e12/docker-compose.yml
-version: '3.9'
+version: "3.9"
 
 services:
     mongo:
@@ -12,7 +12,7 @@ services:
         restart: always
         command: --logpath /dev/null
         ports:
-            - '27017:27017'
+            - "27017:27017"
 
     api:
         container_name: api
@@ -25,4 +25,4 @@ services:
         environment:
             WAIT_HOSTS: mongo:27017
         ports:
-            - '${PORT:-3000}:${PORT:-3000}'
+            - "${PORT:-3000}:${PORT:-3000}"

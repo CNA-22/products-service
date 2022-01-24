@@ -1,6 +1,6 @@
-import { ErrorRequestHandler, RequestHandler } from 'express';
-import expressJWT from 'express-jwt';
-import { pathFilter } from 'express-unless';
+import {ErrorRequestHandler, RequestHandler} from "express";
+import expressJWT from "express-jwt";
+import {pathFilter} from "express-unless";
 
 export interface TokenVerifyingMiddlewareConfiguration {
     secret: string;
@@ -17,12 +17,12 @@ const tokenVerifyingMiddleware = ({
 ] => [
     expressJWT({
         secret,
-        algorithms: ['HS256'],
+        algorithms: ["HS256"],
     }).unless({
         path: publicEndpoints,
     }),
     (error, _req, res, next) => {
-        if (error.name === 'UnauthorizedError') {
+        if (error.name === "UnauthorizedError") {
             res.status(401).send();
             return;
         }

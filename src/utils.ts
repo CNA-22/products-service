@@ -1,8 +1,8 @@
-import { Query } from 'express-serve-static-core';
+import {Query} from "express-serve-static-core";
 
 // From https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/util.ts#L1
 export const isNonEmptyString = (any: any): any is string =>
-    typeof any === 'string' && any.length !== 0;
+    typeof any === "string" && any.length !== 0;
 
 // From https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/util.ts#L4
 export const requireEnvVar = (envVarName: string): string => {
@@ -22,8 +22,8 @@ export const allFulfilled = async <T>(
 ): Promise<T[]> => {
     const results = await Promise.allSettled(promises);
     const values: T[] = [];
-    results.forEach(result => {
-        if (result.status === 'fulfilled') {
+    results.forEach((result) => {
+        if (result.status === "fulfilled") {
             values.push(result.value);
         } else {
             console.error(result.reason.message);
@@ -32,7 +32,7 @@ export const allFulfilled = async <T>(
     if (values.length === results.length) {
         return values;
     } else {
-        throw new Error('Promises rejected.');
+        throw new Error("Promises rejected.");
     }
 };
 
@@ -57,22 +57,22 @@ export const betterIsArray = (any: any): any is any[] => Array.isArray(any);
 export const queryParamAsString = (
     queryParam: Query[string],
 ): string | undefined => {
-    if (typeof queryParam === 'undefined') {
+    if (typeof queryParam === "undefined") {
         return queryParam;
     }
-    if (typeof queryParam === 'string') {
+    if (typeof queryParam === "string") {
         return queryParam;
     }
-    if (typeof queryParam === 'object') {
+    if (typeof queryParam === "object") {
         if (betterIsArray(queryParam)) {
             const lastElement = queryParam[queryParam.length - 1];
-            if (typeof lastElement === 'string') {
+            if (typeof lastElement === "string") {
                 return lastElement;
             }
         }
     }
     throw new TypeError(
-        'Argument queryParam must be either a string, an array of strings or undefined.',
+        "Argument queryParam must be either a string, an array of strings or undefined.",
     );
 };
 
@@ -95,17 +95,17 @@ export const queryParamAsArray = (
     queryParam: Query[string],
 ): string[] | undefined => {
     if (queryParam != null) {
-        if (typeof queryParam === 'object') {
+        if (typeof queryParam === "object") {
             if (
                 betterIsArray(queryParam) &&
                 (queryParam as any[]).every(
-                    element => typeof element === 'string',
+                    (element) => typeof element === "string",
                 )
             ) {
                 return queryParam as string[];
             } else {
                 throw new TypeError(
-                    'Argument queryParam must be either a string, an array of strings or undefined.',
+                    "Argument queryParam must be either a string, an array of strings or undefined.",
                 );
             }
         } else {
@@ -120,7 +120,7 @@ export const evictOtherProperties = (
     object: Record<string, any>,
     whitelistedProperties: string[],
 ): object => {
-    let cleanObject: Record<string, any> = {};
+    const cleanObject: Record<string, any> = {};
     for (const whitelistedProperty of whitelistedProperties) {
         const value = object[whitelistedProperty];
         if (value !== undefined) {
@@ -136,7 +136,7 @@ export const ignorableQueryField = (
     const undefinedPropsEvicted: Record<string, any> = {};
     for (const [key, value] of Object.entries(object)) {
         if (value != null) {
-            undefinedPropsEvicted[key] = value
+            undefinedPropsEvicted[key] = value;
         }
     }
     if (Object.keys(undefinedPropsEvicted).length > 0) {

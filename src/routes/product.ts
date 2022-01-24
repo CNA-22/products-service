@@ -1,24 +1,23 @@
-import { Router, RequestHandler } from 'express';
-import { JSONSchema7 } from 'json-schema';
-import requestBodyValidator from '../middlewares/requestBodyValidator';
+import {RequestHandler, Router} from "express";
+import {JSONSchema7} from "json-schema";
 
-import Product from '../models/Product';
-import { evictOtherProperties } from '../utils';
+import requestBodyValidator from "../middlewares/requestBodyValidator";
+import Product from "../models/Product";
+import {evictOtherProperties} from "../utils";
 
 const findProduct: RequestHandler = async (req, res, next) => {
-    const product = await Product.findOne({ id: req.params.productId });
+    const product = await Product.findOne({id: req.params.productId});
     if (product != null) {
         req.product = product;
         next();
     } else {
         res.status(404).send();
-        return;
     }
 };
 
 const generateId = async (): Promise<string> => {
     const id = Math.round(Math.random() * 1000000000000).toString();
-    if ((await Product.findOne({ id }).exec()) == null) {
+    if ((await Product.findOne({id}).exec()) == null) {
         return id;
     } else {
         return await generateId();
@@ -26,26 +25,26 @@ const generateId = async (): Promise<string> => {
 };
 
 const productRequestBodySchema: JSONSchema7 = {
-    type: 'object',
+    type: "object",
     properties: {
-        name: { type: 'string' },
-        description: { type: 'string' },
-        manufacturer: { type: 'string' },
-        price: { type: 'number', exclusiveMinimum: 0 },
-        chip: { type: 'string' },
-        memory: { type: 'number', exclusiveMinimum: 0 },
-        rating: { type: 'number', minimum: 0, maximum: 1 },
+        name: {type: "string"},
+        description: {type: "string"},
+        manufacturer: {type: "string"},
+        price: {type: "number", exclusiveMinimum: 0},
+        chip: {type: "string"},
+        memory: {type: "number", exclusiveMinimum: 0},
+        rating: {type: "number", minimum: 0, maximum: 1},
         packageDimensions: {
-            type: 'object',
+            type: "object",
             properties: {
-                width: { type: 'number', exclusiveMinimum: 0 },
-                height: { type: 'number', exclusiveMinimum: 0 },
-                depth: { type: 'number', exclusiveMinimum: 0 },
+                width: {type: "number", exclusiveMinimum: 0},
+                height: {type: "number", exclusiveMinimum: 0},
+                depth: {type: "number", exclusiveMinimum: 0},
             },
-            required: ['width', 'height', 'depth'],
+            required: ["width", "height", "depth"],
             additionalProperties: false,
         },
-        packageWeight: { type: 'number', exclusiveMinimum: 0 },
+        packageWeight: {type: "number", exclusiveMinimum: 0},
     },
 };
 
@@ -54,7 +53,7 @@ const properties = Object.keys(productRequestBodySchema.properties!);
 const product = Router();
 
 product.post(
-    '/',
+    "/",
     requestBodyValidator({
         ...productRequestBodySchema,
         required: properties,
@@ -75,7 +74,7 @@ product.post(
 );
 
 product.put(
-    '/:productId',
+    "/:productId",
     findProduct,
     requestBodyValidator(productRequestBodySchema),
     async (req, res) => {
@@ -95,7 +94,7 @@ product.put(
     },
 );
 
-product.delete('/:productId', findProduct, async (req, res) => {
+product.delete("/:productId", findProduct, async (req, res) => {
     const deletedProduct = (await req.product!.deleteOne()).toObject();
     delete deletedProduct.__v;
     delete deletedProduct._id;

@@ -1,39 +1,39 @@
-import { Router } from 'express';
-import { Query } from 'express-serve-static-core';
-import { JSONSchema7 } from 'json-schema';
-import requestBodyValidator from '../middlewares/requestBodyValidator';
+import {Router} from "express";
+import {Query} from "express-serve-static-core";
+import {JSONSchema7} from "json-schema";
 
-import Product from '../models/Product';
+import requestBodyValidator from "../middlewares/requestBodyValidator";
+import Product from "../models/Product";
 import {
     betterParseFloat as bpf,
+    ignorableQueryField as iqf,
     queryParamAsArray as qpAsArr,
     queryParamAsString as qpAsStr,
-    ignorableQueryField as iqf,
-} from '../utils';
+} from "../utils";
 
 const queryParamsSchema: JSONSchema7 = {
-    type: 'object',
+    type: "object",
     properties: {
-        page: { type: 'number', minimum: 0, multipleOf: 1 },
-        size: { type: 'number', minimum: 0, multipleOf: 1 },
+        page: {type: "number", minimum: 0, multipleOf: 1},
+        size: {type: "number", minimum: 0, multipleOf: 1},
         sort: {
             enum: [
-                'name',
-                'manufacturer',
-                'price',
-                'chip',
-                'memory',
-                'rating',
-            ].flatMap((element: string) => [element, '-' + element]),
+                "name",
+                "manufacturer",
+                "price",
+                "chip",
+                "memory",
+                "rating",
+            ].flatMap((element: string) => [element, "-" + element]),
         },
-        filter_manufacturer: { type: 'array', items: { type: 'string' } },
-        min_price: { type: 'number', minimum: 0 },
-        max_price: { type: 'number', minimum: 0 },
-        filter_chip: { type: 'array', items: { type: 'string' } },
-        min_memory: { type: 'number', minimum: 0, multipleOf: 1 },
-        max_memory: { type: 'number', minimum: 0, multipleOf: 1 },
-        min_rating: { type: 'number', minimum: 0, maximum: 1 },
-        max_rating: { type: 'number', minimum: 0, maximum: 1 },
+        filter_manufacturer: {type: "array", items: {type: "string"}},
+        min_price: {type: "number", minimum: 0},
+        max_price: {type: "number", minimum: 0},
+        filter_chip: {type: "array", items: {type: "string"}},
+        min_memory: {type: "number", minimum: 0, multipleOf: 1},
+        max_memory: {type: "number", minimum: 0, multipleOf: 1},
+        min_rating: {type: "number", minimum: 0, maximum: 1},
+        max_rating: {type: "number", minimum: 0, maximum: 1},
     },
 };
 
@@ -54,7 +54,7 @@ const queryParamParsers = {
 const products = Router();
 
 products.get(
-    '/',
+    "/",
     (req, _res, next) => {
         for (const [key, parser] of Object.entries(queryParamParsers)) {
             req.body[key] = parser(req.query[key]);
@@ -63,6 +63,7 @@ products.get(
     },
     requestBodyValidator(queryParamsSchema),
     async (req, res) => {
+        /* eslint-disable @typescript-eslint/naming-convention */
         const {
             page = 0,
             size = 10,
@@ -76,26 +77,27 @@ products.get(
             min_rating,
             max_rating,
         } = req.body;
+        /* eslint-enable @typescript-eslint/naming-convention */
         let sortBy = sort;
-        let direction = 'ascending';
-        if (sortBy?.startsWith('-')) {
+        let direction = "ascending";
+        if (sortBy?.startsWith("-") === true) {
             sortBy = sortBy.slice(1);
-            direction = 'descending';
+            direction = "descending";
         }
         const query = {
-            manufacturer: iqf({ $nin: filter_manufacturer }),
-            price: iqf({ $gte: min_price, $lte: max_price }),
-            chip: iqf({ $nin: filter_chip }),
-            memory: iqf({ $gte: min_memory, $lte: max_memory }),
-            rating: iqf({ $gte: min_rating, $lte: max_rating }),
+            manufacturer: iqf({$nin: filter_manufacturer}),
+            price: iqf({$gte: min_price, $lte: max_price}),
+            chip: iqf({$nin: filter_chip}),
+            memory: iqf({$gte: min_memory, $lte: max_memory}),
+            rating: iqf({$gte: min_rating, $lte: max_rating}),
         };
         const count = await Product.count(query);
         const items = await Product.find(query, {
             __v: false,
             _id: false,
-            'packageDimensions._id': false,
+            "packageDimensions._id": false,
         })
-            .sort(sortBy != null ? { [sortBy]: direction } : undefined)
+            .sort(sortBy != null ? {[sortBy]: direction} : undefined)
             .skip(page * size)
             .limit(size);
         res.status(200).json({
