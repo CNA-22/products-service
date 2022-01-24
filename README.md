@@ -10,8 +10,6 @@ API consumers, the spec is below. Developers and contributors, scroll down for t
 
 ## Development and Contribution
 
-This package was initially set up using [TSDX](https://tsdx.io/). Please familiarize yourself with TSDX by checking out their site and by reading the [TSDX User Guide](docs/TSDX_USER_GUIDE.md).
-
 The `products-service` is implemented as a [Node.js](https://nodejs.org/) server that persists data in a [MongoDB](https://www.mongodb.com/) instance. The source code is written in [TypeScript](https://www.typescriptlang.org/) and uses the [Express](https://expressjs.com/) framework as its "backbone". [`mongoose`](https://mongoosejs.com/) is used for interacting with the database.
 
 ### Development Environment
