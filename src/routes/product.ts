@@ -104,6 +104,19 @@ const properties = Object.keys(productRequestBodySchema.properties!);
 
 const product = Router();
 
+product.get(
+    "/:productId",
+    findProduct,
+    requestBodyValidator(productRequestBodySchema),
+    async (req, res) => {
+        // Do stuff
+        const product = req.product;
+        res.status(200).json({
+            product,
+        });
+    }
+);
+
 product.post(
     "/",
     requestBodyValidator({
