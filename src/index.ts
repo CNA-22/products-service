@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+const cors = require("cors");
 
 import connectToDB from "./connectToDB";
 import jsonMiddleware from "./middlewares/jsonMiddleware";
@@ -9,6 +10,9 @@ import publicEndpoints from "./publicEndpoints";
 import product from "./routes/product";
 import products from "./routes/products";
 import {requireEnvVar} from "./utils";
+
+var allowed_origins = {test: "https://people.arcada.fi/"
+};
 
 // Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/index.ts#L20
 (async () => {
@@ -23,6 +27,7 @@ import {requireEnvVar} from "./utils";
         .use("/products", products)
         .use("/product", product)
         .use(serverErrorMiddleware())
+        .use(cors({allowed_origins}))
         .listen(port, () => console.log(`Server listening on port ${port}.`));
 })().catch((error) => {
     console.error(error);
