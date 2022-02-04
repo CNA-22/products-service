@@ -11,7 +11,7 @@ import product from "./routes/product";
 import products from "./routes/products";
 import {requireEnvVar} from "./utils";
 
-var allowed_origins = {test: "https://people.arcada.fi/"
+var allowed_origins = {origin: ["https://people.arcada.fi/"]
 };
 
 // Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/index.ts#L20
