@@ -27,7 +27,7 @@ var allowed_origins = {origin: ["https://people.arcada.fi/"]
         .use("/products", products)
         .use("/product", product)
         .use(serverErrorMiddleware())
-        .use(cors({allowed_origins}))
+        .use(cors(allowed_origins))
         .listen(port, () => console.log(`Server listening on port ${port}.`));
 })().catch((error) => {
     console.error(error);
