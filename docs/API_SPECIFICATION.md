@@ -4,7 +4,7 @@
 
 ```ts
 interface Product {
-    id: string;
+    pid: string;
     name: string;
     description: string;
     manufacturer: string;
@@ -102,7 +102,7 @@ interface Page {
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `productId` | string | The ID of a product. |
+| `productId` | string | The PID of a product. |
 
 #### Response
 
@@ -123,9 +123,9 @@ Body: described below
 ```ts
 /**
  * An object that conforms to the Product interface,
- * but without the id and imageURLs properties.
+ * but without the pid and imageURLs properties.
  */
-type ProductPostRequestBody = Omit<Product, "id" | "imageURLs">;
+type ProductPostRequestBody = Omit<Product, "pid" | "imageURLs">;
 ```
 
 #### Response
@@ -143,7 +143,7 @@ Body: the newly created `Product`
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `productId` | string | The ID of a product. |
+| `productId` | string | The PID of a product. |
 
 #### Request
 
@@ -190,7 +190,7 @@ Body: described below
 ```ts
 /**
  * An object that conforms to the Product interface,
- * but without the id and imageURLs properties
+ * but without the pid and imageURLs properties
  * and with all top-level properties being optional.
  */
 type ProductPutRequestBody = Partial<Omit<Product, "id" | "imageURLs">>;
@@ -230,7 +230,7 @@ Body: the `Product` that was deleted
 <!-- prettier-ignore -->
 | Param | Type | Description |
 | - | - | - |
-| `productId` | string | The ID of a product. |
+| `productId` | string | The PID of a product. |
 
 #### Request
 
