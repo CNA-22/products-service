@@ -6,7 +6,7 @@ import Product from "../models/Product";
 import {evictOtherProperties} from "../utils";
 
 const findProduct: RequestHandler = async (req, res, next) => {
-    const product = await Product.findOne({id: req.params.productId});
+    const product = await Product.findOne({pid: req.params.productId});
     if (product != null) {
         req.product = product;
         next();
@@ -16,9 +16,9 @@ const findProduct: RequestHandler = async (req, res, next) => {
 };
 
 const generateId = async (): Promise<string> => {
-    const id = Math.round(Math.random() * 1000000000000).toString();
-    if ((await Product.findOne({id}).exec()) == null) {
-        return id;
+    const pid = Math.round(Math.random() * 1000000000000).toString();
+    if ((await Product.findOne({pid}).exec()) == null) {
+        return pid;
     } else {
         return await generateId();
     }
@@ -61,7 +61,7 @@ product.post(
     async (req, res) => {
         const product = (
             await new Product({
-                id: await generateId(),
+                pid: await generateId(),
                 ...evictOtherProperties(req.body, properties),
             }).save()
         ).toObject();
