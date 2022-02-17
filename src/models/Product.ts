@@ -2,7 +2,7 @@ import {Document, Schema, model} from "mongoose";
 
 // Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/73fde06da599ba311cfc34bb33b287db3800c17d/src/models/RefreshToken.ts#L3
 const ProductSchema = new Schema({
-    id: {type: String, required: true, index: true, unique: true},
+    pid: {type: String, required: true, index: true, unique: true},
     name: {type: String, required: true, index: true},
     description: {type: String, required: true},
     manufacturer: {type: String, required: true, index: true},
@@ -23,7 +23,7 @@ const ProductSchema = new Schema({
 });
 
 interface IProductSchema extends Document {
-    id: string;
+    pid: string;
     name: string;
     description: string;
     manufacturer: string;

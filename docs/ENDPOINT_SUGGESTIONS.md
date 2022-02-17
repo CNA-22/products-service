@@ -9,7 +9,7 @@ These are only suggestions. Feel free to make changes.
 
 **`GET`** `/product/{unique identifier}`
 
--   get a product by a unique identifier (part number, SKU, UPC or productId ? (not decided yet))
+-   get a product by a unique identifier (productId)
 -   provides more detailed information about a single product
 
 **`POST`** `/product/`

@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 
 import connectToDB from "./connectToDB";
 import jsonMiddleware from "./middlewares/jsonMiddleware";
@@ -10,6 +11,8 @@ import product from "./routes/product";
 import products from "./routes/products";
 import {requireEnvVar} from "./utils";
 
+var allowed_origins = requireEnvVar("ORIGINS").split(' ');
+
 // Inspired by https://github.com/DanielGiljam/ia-2-017-0-lodge-broker/blob/2780a9d3d557f1fcda0d3610dd04da342934f32c/src/index.ts#L20
 (async () => {
     await connectToDB();
@@ -17,6 +20,7 @@ import {requireEnvVar} from "./utils";
     const port = process.env.PORT ?? 3000;
     express()
         .set("query parser", "simple")
+        .use(cors())
         .use(morgan("dev"))
         .use(tokenVerifyingMiddleware({secret, publicEndpoints}))
         .use(jsonMiddleware())
