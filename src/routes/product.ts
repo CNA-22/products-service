@@ -57,11 +57,14 @@ product.get(
     findProduct,
     requestBodyValidator(productRequestBodySchema),
     async (req, res) => {
-        // Do stuff
-        const product = req.product;
-        res.status(200).json({
-            product,
-        });
+        if (req.product){    
+            const product = req.product.toObject();
+            delete product.__v;
+            delete product._id;
+            delete product.packageWeight.__v;
+            delete product.packageDimensions._id;
+            res.status(200).json(product);
+        }
     }
 );
 
